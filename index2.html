@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <title>藝術新聞頁面</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Noto Sans TC", sans-serif;
+            background-color: #4E6174;
+            color: white;
+        }
+
+        header {
+            background-color: #333;
+            padding: 8px;
+            font-size: 12px;
+        }
+
+        nav {
+            background-color: #9AAFC7;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 10px 0;
+        }
+
+        nav a {
+            background-color: #BCCBE0;
+            padding: 6px 16px;
+            text-decoration: none;
+            color: #000;
+            border-radius: 4px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #FFD700;
+        }
+
+        .section-title span {
+            color: white;
+        }
+
+        .main-news,
+        .news-grid {
+            margin-bottom: 40px;
+        }
+
+        .main-news img {
+            width: 100%;
+            max-height: 250px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .main-news p {
+            margin: 10px 0;
+        }
+
+        .news-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
+        }
+
+        .news-item {
+            width: calc(33% - 10px);
+            background-color: #5C6E85;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        .news-item img {
+            width: 100%;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        .news-item p {
+            font-size: 12px;
+            margin: 6px 0;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #F7F4ED;
+            color: #000;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            text-decoration: none;
+            margin-top: 6px;
+        }
+
+        footer {
+            text-align: right;
+            font-size: 14px;
+            padding: 20px;
+            background-color: #4E6174;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="#">關於</a>
+        <a href="#">藝文新聞</a>
+        <a href="#">新知新聞</a>
+        <a href="#">其他新聞</a>
+        <a href="#">聲音新聞</a>
+        <a href="#">平面作品</a>
+        <a href="#">動畫作品</a>
+    </nav>
+
+    <div class="container">
+        <section class="main-news">
+            <h2 class="section-title">多元媒材建構日常場景 <span>《隔壁 Next Door》訴說邊界與空間關係</span></h2>
+            <p>2023/09/28．藝術新聞</p>
+            <img src="your-image-path.jpg" alt="Main news image">
+            <p>「場所的邊界一旦被顛覆，那麼『隔牆』才開始存在。」互為好友的藝術家王馨慧、國立臺北藝術大學美術學系碩士生林若瑄、國立臺南藝術大學造形藝術研究所碩士生黃郁慈，於恆白計畫所竹竹竹藝術空間策展，聯合帶來展覽《隔壁
+                Next Door》...</p>
+            <a class="button" href="#">觀看全文 &gt;&gt;</a>
+        </section>
+
+        <section class="news-grid">
+            <div class="news-item">
+                <img src="your-image-path.jpg" alt="">
+                <p>傳統技法揉合現代元素<br>吳亭菁描繪女性所思所想</p>
+                <p>2023/09/28．藝術新聞</p>
+                <a class="button" href="#">觀看全文 &gt;&gt;</a>
+            </div>
+            <div class="news-item">
+                <img src="your-image-path.jpg" alt="">
+                <p>觀見時中日常<br>《絲綢》蘇曲共譜生命感受</p>
+                <a class="button" href="#">觀看全文 &gt;&gt;</a>
+            </div>
+            <div class="news-item">
+                <img src="your-image-path.jpg" alt="">
+                <p>傳統技法揉合現代元素<br>吳亭菁描繪女性所思所想</p>
+                <a class="button" href="#">觀看全文 &gt;&gt;</a>
+            </div>
+        </section>
+
+        <!-- 第二組內容可以重複貼上一樣的結構 -->
+
+    </div>
+
+    <footer>
+        占卜師　黎昕俞<br>
+        占卜顧問　李法景
+    </footer>
+
+</body>
+
+</html>
