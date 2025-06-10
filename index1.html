@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>占新實錄</title>
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    font-family: serif;
+    color: #4b5563;
+    background: #8b9a6b;
+  }
+  .container {
+    width: 100vw;
+    min-height: 100vh;
+    padding: 24px;
+    position: relative;
+    overflow-x: hidden;
+  }
+  .frame-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .container > *:not(.frame-img) {
+    position: relative;
+    z-index: 1;
+  }
+  .moon {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    color: white;
+  }
+  .title {
+    text-align: center;
+    margin-top: 96px;
+    margin-bottom: 40px;
+  }
+  .title h1 {
+    font-size: 36px;
+    font-weight: bold;
+    color: #22543d;
+  }
+  .title p {
+    font-size: 18px;
+    color: #fbfbfb;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    padding: 0 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+ 
+  /* 響應式設計 */
+  @media (max-width: 1024px) {
+    .card-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+ 
+  @media (max-width: 768px) {
+    .card-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 0 12px;
+    }
+  }
+ 
+  @media (max-width: 480px) {
+    .card-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+ 
+  .card {
+    position: relative;
+    padding: 8px;
+    border: 3px solid #4a5568;
+    background: linear-gradient(to top, #fff7d6, #ffeeb2);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    overflow: hidden;
+    aspect-ratio: 9/16;
+    min-height: 250px;
+  }
+ 
+  /* 圖片容器 */
+  .card-image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+ 
+  /* 底層彩色圖片 */
+  .card-image-color {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+  }
+ 
+  /* 上層黑色遮罩 */
+  .card-image-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: all 0.3s ease;
+    z-index: 1;
+  }
+ 
+  /* Hover 時移除黑色遮罩 */
+  .card:hover .card-image-mask {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+ 
+  .card:hover .card-image-color {
+    transform: scale(1.1);
+  }
+ 
+  /* 增強的 hover 效果 */
+  .card:hover {
+    transform: translateY(-8px) scale(1.05);
+    cursor: pointer;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    border-width: 4px;
+    z-index: 10;
+  }
+ 
+  /* 添加發光效果 */
+  .card:hover::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg,
+      rgba(255, 255, 255, 0.3),
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.3));
+    z-index: -1;
+    border-radius: 4px;
+    opacity: 0.7;
+  }
+ 
+  .symbol {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    font-size: 20px;
+    transition: transform 0.3s ease;
+    z-index: 3;
+  }
+ 
+  .card:hover .symbol {
+    transform: rotate(15deg) scale(1.2);
+  }
+ 
+  /* 隨意排列的標籤容器 */
+  .card-default-tags {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    transition: opacity 0.3s ease;
+  }
+ 
+  .card:hover .card-default-tags {
+    opacity: 0;
+  }
+ 
+  /* 個別標籤定位 */
+  .default-tag {
+    position: absolute;
+    color: white;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.2);
+    padding: 4px 8px;
+    border-radius: 12px;
+    white-space: nowrap;
+    transform-origin: center;
+  }
+ 
+  /* 程心卡片的標籤排列 - 修正類別名稱 */
+  .card-chengshin .tag-1 {
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 18px;
+  }
+ 
+  .card-chengshin .tag-2 {
+    top: 30%;
+    left: 30%;
+    font-size: 14px;
+  }
+ 
+  .card-chengshin .tag-3 {
+    top: 45%;
+    right: 25%;
+    font-size: 16px;
+  }
+ 
+  .card-chengshin .tag-4 {
+    bottom: 35%;
+    left: 15%;
+    font-size: 20px;
+    font-weight: 900;
+  }
+ 
+  .card-chengshin .tag-5 {
+    bottom: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 18px;
+  }
+ 
+  /* 華琳卡片的標籤排列 */
+  .card-華琳 .tag-1 {
+    top: 20%;
+    left: 20%;
+    font-size: 16px;
+  }
+ 
+  .card-華琳 .tag-2 {
+    top: 40%;
+    right: 20%;
+    font-size: 14px;
+  }
+ 
+  .card-華琳 .tag-3 {
+    bottom: 30%;
+    left: 30%;
+    font-size: 18px;
+  }
+ 
+  /* 黎卡片的標籤排列 */
+  .card-黎 .tag-1 {
+    top: 25%;
+    left: 25%;
+    font-size: 15px;
+  }
+ 
+  .card-黎 .tag-2 {
+    top: 50%;
+    right: 30%;
+    font-size: 17px;
+  }
+ 
+  .card-黎 .tag-3 {
+    bottom: 25%;
+    left: 40%;
+    font-size: 16px;
+  }
+ 
+  /* 蔡卡片的標籤排列 */
+  .card-蔡 .tag-1 {
+    top: 30%;
+    left: 15%;
+    font-size: 14px;
+  }
+ 
+  .card-蔡 .tag-2 {
+    top: 55%;
+    right: 15%;
+    font-size: 16px;
+  }
+ 
+  .card-蔡 .tag-3 {
+    bottom: 20%;
+    left: 35%;
+    font-size: 15px;
+  }
+ 
+  /* 李卡片的標籤排列 */
+  .card-李 .tag-1 {
+    top: 20%;
+    left: 30%;
+    font-size: 18px;
+  }
+ 
+  .card-李 .tag-2 {
+    top: 45%;
+    right: 25%;
+    font-size: 14px;
+  }
+ 
+  .card-李 .tag-3 {
+    bottom: 30%;
+    left: 20%;
+    font-size: 16px;
+  }
+ 
+  .description {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: white;
+    padding: 0 20px;
+  }
+</style>
+</head>
+<body>
+
+
+<div class="container">
+  <img src="frame-border.png" alt="邊框裝飾" class="frame-img">
+
+
+  <div class="moon">
+    <div style="font-size: 40px;">🌙</div>
+    <div style="font-size: 12px;">⋆ ✧ ✦ ✧ ⋆</div>
+  </div>
+
+
+  <div class="title">
+    <h1>占新實錄</h1>
+    <p>解讀新象，掌握先機</p>
+  </div>
+
+
+  <div class="card-grid">
+    <!-- 角色1 - 程心  -->
+    <a href="file:///Users/icndy/Desktop/新聞網站期末/程心的頁面/index F1.html" class="card card-chengshin" style="border-color:#857e60">
+      <div class="card-image-container">
+        <!-- 底層彩色圖片 -->
+        <img src="程 彩色去背.png" alt="程心" class="card-image-color" />
+        <!-- 上層黑色遮罩 -->
+        <img src="程 剪影去背.png" alt="程心剪影" class="card-image-mask" />
+      </div>
+     
+      <!-- 隨意排列的標籤 -->
+      <div class="card-default-tags">
+        <span class="default-tag tag-1">#正氣</span>
+        <span class="default-tag tag-2">#ENFP</span>
+        <span class="default-tag tag-3">#牙齒很白</span>
+        <span class="default-tag tag-4">#超會抓蟲</span>
+        <span class="default-tag tag-5">#小鹿亂撞</span>
+      </div>
+     
+      <div class="symbol" style="color:#d69e2e;">♐</div>
+    </a>
+   
+    <!-- 角色2 -->
+    <a href="#角色2" class="card card-華琳" style="border-color:#c53030;background:linear-gradient(to top,#fbd6d6,#f5bcbc);">
+      <div class="card-image-container">
+        <img src="https://via.placeholder.com/300x400/ff9999/ffffff?text=角色2" alt="角色2" class="card-image-color" />
+        <img src="https://via.placeholder.com/300x400/333333/ffffff?text=角色2剪影" alt="角色2剪影" class="card-image-mask" />
+      </div>
+      <div class="card-default-tags">
+        <span class="default-tag tag-1">#狐狸精</span>
+        <span class="default-tag tag-2">#工作狂</span>
+        <span class="default-tag tag-3">#魅力</span>
+      </div>
+      <div class="symbol" style="color:#c53030;">♑</div>
+    </a>
+   
+    <!-- 角色3 -->
+    <a href="https://eunice-1106.github.io/index2.html" class="card card-黎" style="border-color:#2b6cb0;background:linear-gradient(to top,#d3f0f8,#a7e3f0);">
+      <div class="card-image-container">
+        <img src="https://via.placeholder.com/300x400/99ccff/ffffff?text=角色3" alt="角色3" class="card-image-color" />
+        <img src="https://via.placeholder.com/300x400/333333/ffffff?text=角色3剪影" alt="角色3剪影" class="card-image-mask" />
+      </div>
+      <div class="card-default-tags">
+        <span class="default-tag tag-1">#貓頭鷹</span>
+        <span class="default-tag tag-2">#神秘</span>
+        <span class="default-tag tag-3">#智慧</span>
+      </div>
+      <div class="symbol" style="color:#2c5282;">♏</div>
+    </a>
+   
+    <!-- 角色4 -->
+    <a href="#角色4" class="card card-蔡" style="border-color:#dd6b20;background:linear-gradient(to top,#ffe0b2,#ffd699);">
+      <div class="card-image-container">
+        <img src="https://via.placeholder.com/300x400/ffcc99/ffffff?text=角色4" alt="角色4" class="card-image-color" />
+        <img src="https://via.placeholder.com/300x400/333333/ffffff?text=角色4剪影" alt="角色4剪影" class="card-image-mask" />
+      </div>
+      <div class="card-default-tags">
+       <span class="default-tag tag-1">#黑眼圈</span>
+       <span class="default-tag tag-2">#像個直男</span>
+       <span class="default-tag tag-3">#INFP</span>
+       <span class="default-tag tag-4">#怪</span>
+       <span class="default-tag tag-5">#貓頭鷹</span>
+      </div>
+      <div class="symbol" style="color:#dd6b20;">♓</div>
+    </a>
+   
+    <!-- 角色5 -->
+    <a href="https://eevucc.github.io/index.html" class="card card-李" style="border-color:#805ad5;background:linear-gradient(to top,#e9d6ff,#dbbfff);">
+      <div class="card-image-container">
+        <img src="https://via.placeholder.com/300x400/cc99ff/ffffff?text=角色5" alt="角色5" class="card-image-color" />
+        <img src="https://via.placeholder.com/300x400/333333/ffffff?text=角色5剪影" alt="角色5剪影" class="card-image-mask" />
+      </div>
+      <div class="card-default-tags">
+        <span class="default-tag tag-1">#123</span>
+        <span class="default-tag tag-2">#456</span>
+        <span class="default-tag tag-3">#789</span>
+      </div>
+      <div class="symbol" style="color:#6b46c1;">♋</div>
+    </a>
+  </div>
+
+
+  <div class="description">
+    歡迎成為占新實錄線上信徒！<br/>
+    在這裡你可以得到心靈的寄託與成長 ✨
+  </div>
+</div>
+
+
+</body>
+</html>
+
+
+
